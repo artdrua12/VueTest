@@ -22,7 +22,7 @@ export default new Vuex.Store({
             }
         },
         setCounter(state, payload) {
-            state[payload.counterview] = payload.countervalue;
+            state[payload.counterview] = +payload.countervalue;
         }
     }
 })

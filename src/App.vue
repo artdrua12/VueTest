@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <app-counter number="1" counterview="firstCounter">
+    <!-- <app-counter number="1" counterview="firstCounter">
       <p @click="clickSumma()">Сумма</p>
     </app-counter>
     <app-counter number="2" >
       <p @click="clickConst()">Константа</p>
     </app-counter>
-    <app-counter number="3"></app-counter>
+    <app-counter number="3"></app-counter>-->
+    <app-control number="1" counterview="firstCounter">
+      <p @click="clickSumma()">Сумма</p>
+    </app-control>
+    <app-control number="2">
+      <p @click="clickConst()">Константа</p>
+    </app-control>
+    <app-control number="3"></app-control>
   </div>
 </template>
 
 <script>
 import Counter from "./Counter";
+import Control from "./Control";
 export default {
   name: "app",
   data() {
@@ -33,14 +41,15 @@ export default {
     }
   },
   components: {
-    appCounter: Counter
+    appCounter: Counter,
+    appControl: Control
   }
 };
 </script>
 
 <style>
-#app{
- display: flex;
- flex-direction: column;
+#app {
+  display: flex;
+  flex-direction: column;
 }
 </style>

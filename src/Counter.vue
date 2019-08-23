@@ -65,8 +65,9 @@ export default {
       this.$refs.refInput.focus();
     },
     onInput({ target }) {
+      let isFloat= String(target.value).match(/[.,]+/g);
       let val = +target.value;
-      if (val >= 0) {
+      if (val >= 0 && !isFloat) {
         this.$store.commit("setCounter", {
           countervalue: val,
           counterview: this.counterview
