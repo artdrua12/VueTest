@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <app-control number="1" counterview="firstCounter" tabindex="1">
+    <app-control number="1" counterview="firstCounter">
       <p @click.stop="clickSumma()">Сумма</p>
     </app-control>
-    <app-control number="2" tabindex="2">
+    <app-control number="2">
       <p @click.stop="clickConst()">Константа</p>
     </app-control>
-    <app-control number="3" tabindex="3"></app-control>
+    <app-control number="3"></app-control>
   </div>
 </template>
 
@@ -42,5 +42,7 @@ export default {
 #app {
   display: flex;
   flex-direction: column;
+  margin: auto;
+  align-items: center;
 }
 </style>
