@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import Counter from "./Counter";
 import Control from "./Control";
 export default {
   name: "app",
@@ -34,7 +33,6 @@ export default {
     }
   },
   components: {
-    appCounter: Counter,
     appControl: Control
   }
 };
