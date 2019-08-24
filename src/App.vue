@@ -1,19 +1,12 @@
 <template>
   <div id="app">
-    <!-- <app-counter number="1" counterview="firstCounter">
-      <p @click="clickSumma()">Сумма</p>
-    </app-counter>
-    <app-counter number="2" >
-      <p @click="clickConst()">Константа</p>
-    </app-counter>
-    <app-counter number="3"></app-counter>-->
-    <app-control number="1" counterview="firstCounter">
-      <p @click="clickSumma()">Сумма</p>
+    <app-control number="1" counterview="firstCounter" tabindex="1">
+      <p @click.stop="clickSumma()">Сумма</p>
     </app-control>
-    <app-control number="2">
-      <p @click="clickConst()">Константа</p>
+    <app-control number="2" tabindex="2">
+      <p @click.stop="clickConst()">Константа</p>
     </app-control>
-    <app-control number="3"></app-control>
+    <app-control number="3" tabindex="3"></app-control>
   </div>
 </template>
 

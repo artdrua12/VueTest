@@ -1,21 +1,23 @@
 <template>
-  <div class="app" @click.self="show=false">
+  <div class="app" @click="show=false" tabindex="-1">
     <h2>Контролл {{number}}</h2>
-    <h2 v-show="!show" @click="show=true">
+    <h2 v-show="!show" @click.stop="showClick">
       {{counterSpace}}
-      <i @click="show=true" class="material-icons">keyboard_arrow_down</i>
+      <i class="material-icons">keyboard_arrow_down</i>
     </h2>
     <div v-show="show">
       <div class="inputAdvance">
         <input
+          tabindex="-1"
           :value="counter"
           ref="refInput"
           @input="onInput"
           @keypress="onKeypress"
-          @click="inputClick"
+          @keydown="onKeydown"
+          @click.stop="inputClick"
         />
-        <i class="top material-icons" @click="updateCount(1)">arrow_drop_up</i>
-        <i class="bottom material-icons" @click="updateCount(-1)">arrow_drop_down</i>
+        <i class="top material-icons" @click.stop="updateCount(1)">arrow_drop_up</i>
+        <i class="bottom material-icons" @click.stop="updateCount(-1)">arrow_drop_down</i>
       </div>
       <slot class="slot"></slot>
     </div>
@@ -39,14 +41,36 @@ export default {
     onKeypress(e) {
       let code = e.charCode || e.keyCode;
       if (code == 13) {
-        alert("Enter");
-      }
-      if (code == 9) {
-        alert("Esc");
+        this.show = false;
       }
       if (code < 48 || code > 57) {
         e.preventDefault();
       }
+    },
+    onKeydown(e) {
+      let code = e.charCode || e.keyCode;
+      if (code == 38) {
+        this.updateCount(1);
+        e.preventDefault();
+      }
+      if (code == 40) {
+        this.updateCount(-1);
+        e.preventDefault();
+      }
+      if (code == 9) {
+        this.show = false;
+      }
+      if (code == 27) {
+        this.show = false;
+      }
+    },
+    showClick() {
+      this.show = true;
+      setTimeout(() => {
+        this.$refs.refInput.select();
+      }, 70);
+
+      // this.$refs.refInput.select();
     },
     updateCount(value) {
       this.$store.commit("changeCounter", {
@@ -101,6 +125,7 @@ export default {
 .material-icons {
   font-size: 20px;
   padding: 0px;
+  user-select: none;
 }
 
 .slot {
@@ -114,6 +139,9 @@ h2 {
 }
 h2:first-child {
   width: 200px;
+}
+h2:nth-child(2):hover {
+  color: rgb(16, 191, 197);
 }
 
 input {
