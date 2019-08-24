@@ -1,7 +1,7 @@
 <template>
   <div class="app" @click="show=false" tabindex="-1">
     <h2>Контролл {{number}}</h2>
-    <h2 v-show="!show" @click.stop="showClick">
+    <h2 :tabindex="number" v-show="!show" @click.stop="showClick">
       {{counterSpace}}
       <i class="material-icons">keyboard_arrow_down</i>
     </h2>
@@ -11,13 +11,14 @@
           tabindex="-1"
           :value="counter"
           ref="refInput"
+          @focus="onFocus"
           @input="onInput"
           @keypress="onKeypress"
           @keydown="onKeydown"
           @click.stop="inputClick"
         />
-        <i class="top material-icons" @click.stop="updateCount(1)">arrow_drop_up</i>
-        <i class="bottom material-icons" @click.stop="updateCount(-1)">arrow_drop_down</i>
+        <i class="top material-icons" @click.stop.prevent="updateCount(1)">arrow_drop_up</i>
+        <i class="bottom material-icons" @click.stop.prevent="updateCount(-1)">arrow_drop_down</i>
       </div>
       <slot class="slot"></slot>
     </div>
@@ -30,7 +31,8 @@ export default {
     counterview: {
       default: "counter"
     },
-    number: ""
+    number: "",
+    oldValue: ""
   },
   data() {
     return {
@@ -49,35 +51,44 @@ export default {
     },
     onKeydown(e) {
       let code = e.charCode || e.keyCode;
-      if (code == 38) {
-        this.updateCount(1);
-        e.preventDefault();
+      switch (code) {
+        case 40:
+          this.updateCount(-1);
+          e.preventDefault();
+          break;
+        case 38:
+          this.updateCount(1);
+          e.preventDefault();
+          break;
+        case 27:
+          this.show = false;
+          this.$store.commit("setCounter", {
+            countervalue: this.oldValue,
+            counterview: this.counterview
+          });
+          break;
+        case 9:
+          this.show = false;
+          break;
+        default:
+          break;
       }
-      if (code == 40) {
-        this.updateCount(-1);
-        e.preventDefault();
-      }
-      if (code == 9) {
-        this.show = false;
-      }
-      if (code == 27) {
-        this.show = false;
-      }
+    },
+    onFocus() {
+      this.oldValue = this.$store.state[this.counterview];
     },
     showClick() {
       this.show = true;
       setTimeout(() => {
         this.$refs.refInput.select();
-      }, 70);
-
-      // this.$refs.refInput.select();
+      }, 50);
     },
     updateCount(value) {
+      this.$refs.refInput.focus();
       this.$store.commit("changeCounter", {
         countervalue: value,
         counterview: this.counterview
       });
-      this.$refs.refInput.focus();
     },
     onInput({ target }) {
       let val = +target.value;
@@ -108,9 +119,12 @@ export default {
 <style scoped>
 .app {
   display: flex;
-  width: 450px;
+  width: 500px;
   height: 50px;
   padding: 30px;
+}
+.app:focus {
+  outline: none;
 }
 .inputAdvance {
   width: 220px;
@@ -124,7 +138,6 @@ export default {
 }
 .material-icons {
   font-size: 20px;
-  padding: 0px;
   user-select: none;
 }
 
